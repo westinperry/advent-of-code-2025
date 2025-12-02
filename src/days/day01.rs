@@ -40,7 +40,7 @@ pub fn day_1() {
         }
     }
 
-    println!("Combination to the safe is: {}", count);
+    println!("Combination to the safe for day 1 is: {}", count);
 }
 
 // Takes reference to str -> returns vector of all lines

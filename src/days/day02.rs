@@ -21,13 +21,13 @@ pub fn day_2() {
         for number in start_stop[0]..=start_stop[1] {
             let s = number.to_string();
             let num_len = s.len();
-            
+
             // Checking index less than half of string (no point going past half)
             for k in 1..=(num_len / 2) {
                 // If pattern can exist for length k
                 if num_len % k == 0 {
                     let pattern = &s[0..k];
-                    
+
                     // Check if repeated pattern equals full string
                     // Need break to prevent double counting same string different pattern 3, 33, 333 in string 333333
                     if pattern.repeat(num_len / k) == s {
@@ -35,7 +35,6 @@ pub fn day_2() {
                         // println!("{}", number);
                         break;
                     }
-
                 }
             }
         }

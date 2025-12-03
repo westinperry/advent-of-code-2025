@@ -4,8 +4,7 @@ pub fn day_1() {
     // File expected, new dial directions per line
     let file_path = "inputs/day_1_input.txt";
 
-    let contents = fs::read_to_string(file_path)
-        .expect("read file error");
+    let contents = fs::read_to_string(file_path).expect("read file error");
 
     let context_vec = read_lines(&contents);
 
@@ -17,11 +16,11 @@ pub fn day_1() {
         let dir = line.chars().next().unwrap();
         // Getting distance from line (making int)
         let dist: i32 = line[1..].parse().expect("invalid number");
-        
-        /* 
+
+        /*
         Get number of rotations, then for each remainder determine if
         number would go over or be 0. Similar for each direction
-        */ 
+        */
         if dir == 'R' {
             count += dist / 100;
             for _ in 0..(dist % 100) {
@@ -30,8 +29,7 @@ pub fn day_1() {
                     count += 1;
                 }
             }
-        }
-        else {
+        } else {
             count += dist / 100;
             for _ in 0..(dist % 100) {
                 curr_num = (curr_num - 1) % 100;
@@ -42,8 +40,7 @@ pub fn day_1() {
         }
     }
 
-    println!("Combination to the safe is: {}", count);
-    
+    println!("Combination to the safe for day 1 is: {}", count);
 }
 
 // Takes reference to str -> returns vector of all lines

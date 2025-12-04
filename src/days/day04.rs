@@ -1,6 +1,5 @@
 use std::fs;
 
-
 pub fn day_4() {
     let file_path = "inputs/day_4_input.txt";
     //let file_path = "inputs/day_4_input_test.txt";
@@ -8,31 +7,23 @@ pub fn day_4() {
 
     // Creates a grid that of the input file.
     // (collect chars of each line, second collect - collects all vectors)
-    let mut grid: Vec<Vec<char>> = context
-        .lines()
-        .map(|line| line.chars().collect())
-        .collect();
+    let mut grid: Vec<Vec<char>> = context.lines().map(|line| line.chars().collect()).collect();
 
     let mut total_accessible_rolls: i32 = 0;
 
     loop {
-
         let (new_rolls, new_grid) = find_accessible_rolls(grid);
         grid = new_grid;
 
         total_accessible_rolls += new_rolls;
 
-
         if new_rolls == 0 {
-            break
+            break;
         }
     }
-    
 
     println!("Total Rolls Day 4: {}", total_accessible_rolls)
-   
 }
-
 
 fn find_accessible_rolls(grid: Vec<Vec<char>>) -> (i32, Vec<Vec<char>>) {
     // println!("{:?}", grid)
@@ -44,9 +35,14 @@ fn find_accessible_rolls(grid: Vec<Vec<char>>) -> (i32, Vec<Vec<char>>) {
 
     //println!("{}, {}", grid_width, grid_height);
     let directions: [(isize, isize); 8] = [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1),           (0, 1),
-        (1, -1),  (1, 0),  (1, 1)
+        (-1, -1),
+        (-1, 0),
+        (-1, 1),
+        (0, -1),
+        (0, 1),
+        (1, -1),
+        (1, 0),
+        (1, 1),
     ];
 
     for i in 0..grid_width {
@@ -59,34 +55,26 @@ fn find_accessible_rolls(grid: Vec<Vec<char>>) -> (i32, Vec<Vec<char>>) {
                 for (di, dj) in directions {
                     let ni = di + i as isize;
                     let nj = dj + j as isize;
-                    
-                    
-                    if ni >= 0 && ni < grid_width as isize &&
-                       nj >= 0 && nj < grid_height as isize {
+
+                    if ni >= 0 && ni < grid_width as isize && nj >= 0 && nj < grid_height as isize {
                         if grid[ni as usize][nj as usize] == '@' {
                             adjacent_rolls += 1;
 
                             //println!("{} {} {}", ni, nj, adjacent_rolls);
                         }
-
-                        
-
                     }
-
-                    
                 }
                 if adjacent_rolls < 4 {
                     accessable_rolls += 1;
                     new_grid[i][j] = '.';
                 }
             }
-            
         }
     }
-
-    println!("{}", accessable_rolls);
 
     (accessable_rolls, new_grid)
 }
 
 // 1569 - Correct
+
+// 9280 - Correct

@@ -1,4 +1,4 @@
-use std::{fs, ops::Index};
+use std::fs;
 
 
 pub fn day_4() {
@@ -15,11 +15,15 @@ pub fn day_4() {
 
     // println!("{:?}", grid)
     let mut result_grid = grid.clone();
-    let mut current_location = vec![0,0];
     let grid_width = grid[0].len();
     let grid_height = grid.len();
 
     //println!("{}, {}", grid_width, grid_height);
+    let directions: [(isize, isize); 8] = [
+        (-1, -1), (-1, 0), (-1, 1),
+        (0, -1),           (0, 1),
+        (1, -1),  (1, 0),  (1, 1)
+    ];
 
     for i in 0..grid_width {
         for j in 0..grid_height {
@@ -27,6 +31,20 @@ pub fn day_4() {
             if grid[i][j] == '@' {
                 let mut adjacenet_rolls = 0;
 
+                // Looping through directions to check adjacent cells for rolls of paper
+                for (di, dj) in directions {
+                    let ni = di + i as isize;
+                    let nj = dj + j as isize;
+
+                    if ni >= 0 && ni <= grid_width as isize &&
+                       nj >= 0 && nj <= grid_height as isize {
+
+                        if grid[ni as usize][nj as usize] == '@' {
+                            adjacenet_rolls += 1;
+                        }
+
+                    }
+                }
 
                 if adjacenet_rolls < 4 {
                     result_grid[i][j] = 'x';

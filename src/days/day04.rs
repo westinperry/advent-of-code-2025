@@ -15,8 +15,8 @@ pub fn day_4() {
 
     // println!("{:?}", grid)
     let mut result_grid = grid.clone();
-    let grid_width = grid[0].len();
-    let grid_height = grid.len();
+    let grid_width = grid[0].len() - 1;
+    let grid_height = grid.len() - 1;
 
     //println!("{}, {}", grid_width, grid_height);
     let directions: [(isize, isize); 8] = [
@@ -55,5 +55,7 @@ pub fn day_4() {
             
         }
     }
+
+    println!("{:?}", result_grid);
    
 }

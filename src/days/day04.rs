@@ -14,9 +14,10 @@ pub fn day_4() {
         .collect();
 
     // println!("{:?}", grid)
-    let mut result_grid = grid.clone();
-    let grid_width = grid[0].len() - 1;
-    let grid_height = grid.len() - 1;
+    let mut accessable_rolls = 0;
+    let grid_width = grid[0].len();
+    let grid_height = grid.len();
+    let mut adjacent_rolls;
 
     //println!("{}, {}", grid_width, grid_height);
     let directions: [(isize, isize); 8] = [
@@ -29,33 +30,35 @@ pub fn day_4() {
         for j in 0..grid_height {
             // If current grid is @
             if grid[i][j] == '@' {
-                let mut adjacenet_rolls = 0;
+                adjacent_rolls = 0;
 
                 // Looping through directions to check adjacent cells for rolls of paper
                 for (di, dj) in directions {
                     let ni = di + i as isize;
                     let nj = dj + j as isize;
-
-                    if ni >= 0 && ni <= grid_width as isize &&
-                       nj >= 0 && nj <= grid_height as isize {
-
+                    
+                    
+                    if ni >= 0 && ni < grid_width as isize &&
+                       nj >= 0 && nj < grid_height as isize {
                         if grid[ni as usize][nj as usize] == '@' {
-                            adjacenet_rolls += 1;
+                            adjacent_rolls += 1;
+                            //println!("{} {} {}", ni, nj, adjacent_rolls);
                         }
 
-                    }
-                }
+                        
 
-                if adjacenet_rolls < 4 {
-                    result_grid[i][j] = 'x';
-                } else {
-                    result_grid[i][j] = '@';
+                    }
+
+                    
+                }
+                if adjacent_rolls < 4 {
+                    accessable_rolls += 1;
                 }
             }
             
         }
     }
 
-    println!("{:?}", result_grid);
+    println!("{}", accessable_rolls);
    
 }

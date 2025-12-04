@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, ops::Index};
 
 
 pub fn day_4() {
@@ -13,6 +13,29 @@ pub fn day_4() {
         .map(|line| line.chars().collect())
         .collect();
 
+    // println!("{:?}", grid)
+    let mut result_grid = grid.clone();
+    let mut current_location = vec![0,0];
+    let grid_width = grid[0].len();
+    let grid_height = grid.len();
 
-    println!("{:?}", grid)
+    //println!("{}, {}", grid_width, grid_height);
+
+    for i in 0..grid_width {
+        for j in 0..grid_height {
+            // If current grid is @
+            if grid[i][j] == '@' {
+                let mut adjacenet_rolls = 0;
+
+
+                if adjacenet_rolls < 4 {
+                    result_grid[i][j] = 'x';
+                } else {
+                    result_grid[i][j] = '@';
+                }
+            }
+            
+        }
+    }
+   
 }

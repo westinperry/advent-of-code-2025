@@ -5,4 +5,5 @@ fn main() {
     days::day02::day_2();
     days::day03::day_3();
     days::day04::day_4();
+    days::day05::day_5();
 }

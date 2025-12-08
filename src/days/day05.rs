@@ -14,7 +14,7 @@ pub fn day_5() {
     // Seperate into vectors
     let space_idx = context_vec.iter().position(|x| x.is_empty()).unwrap();
     let range_vec: &[&str] = &context_vec[..space_idx];
-    let id_vec = &context_vec[space_idx+1..];
+    //let id_vec = &context_vec[space_idx+1..];
 
     let ranges = merge_ranges(range_vec.to_vec());
 

@@ -1,11 +1,12 @@
 mod days;
 
 fn main() {
-    days::day01::day_1();
-    days::day02::day_2();
-    days::day03::day_3();
-    days::day04::day_4();
-    days::day05::day_5();
-    days::day06::day_6();
-    days::day07::day_7();
+    // days::day01::day_1();
+    // days::day02::day_2();
+    // days::day03::day_3();
+    // days::day04::day_4();
+    // days::day05::day_5();
+    // days::day06::day_6();
+    // days::day07::day_7();
+    days::day08::day_8();
 }

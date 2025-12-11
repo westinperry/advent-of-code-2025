@@ -53,7 +53,7 @@ pub fn day_8() {
 
     let mut circuits: Vec<Vec<usize>> = Vec::new();
 
-    for _ in 0..=1000 {
+    for _ in 0..1000 {
         // Find the smallest value in the HashMap
         let min_entry = distances
             .iter()
@@ -65,28 +65,43 @@ pub fn day_8() {
         distances.remove(&min_entry);
         let (key1, key2) = min_entry;
         
+        // Needed help with merge logic
         // Check if either key exists in any circuit
-        let mut found = false;
-
-        for circuit in circuits.iter_mut() {
+        let mut circuit1_idx: Option<usize> = None;
+        let mut circuit2_idx: Option<usize> = None;
+        
+        for (i, circuit) in circuits.iter().enumerate() {
             if circuit.contains(&key1) {
-                if !circuit.contains(&key2) {
-                    circuit.push(key2);
-                }
-                found = true;
-                break;
-            } else if circuit.contains(&key2) {
-                if !circuit.contains(&key1) {
-                    circuit.push(key1);
-                }
-                found = true;
-                break;
+                circuit1_idx = Some(i);
+            }
+            if circuit.contains(&key2) {
+                circuit2_idx = Some(i);
             }
         }
-        
-        // If not found in any circuit, create a new one
-        if !found {
-            circuits.push(vec![key1, key2]);
+
+        match (circuit1_idx, circuit2_idx) {
+            // Both in same circuit
+            (Some(i), Some(j)) if i == j => {},
+            // Both in different circuits
+            (Some(i), Some(j)) => {
+                let circuit2 = circuits.remove(j.max(i));
+                let circuit1 = circuits.remove(j.min(i));
+                let mut merged = circuit1;
+                merged.extend(circuit2);
+                circuits.push(merged);
+            },
+            // Only key1 is in a circuit - add key2 to it
+            (Some(i), None) => {
+                circuits[i].push(key2);
+            },
+            // Only key2 is in a circuit - add key1 to it
+            (None, Some(j)) => {
+                circuits[j].push(key1);
+            },
+            // Neither is in a circuit - create new one
+            (None, None) => {
+                circuits.push(vec![key1, key2]);
+            }
         }
 
     }

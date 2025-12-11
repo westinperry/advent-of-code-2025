@@ -1,4 +1,4 @@
-use std::{fs};
+use std::{collections::HashMap, fs};
 
 struct Point {
     x: f32,
@@ -24,15 +24,40 @@ pub fn day_8() {
             }
         })
         .collect();
-    let result = calc_3d_dist(&points[0], &points[1]);
 
-    println!("Distance: {:?}", result);
+    let mut distances: HashMap<(usize, usize), usize> = HashMap::new();
+    
+    for p in 0..points.len() {
+        for j in 0..points.len() {
+            if p != j {
+
+                let distance = calc_3d_dist(&points[p], &points[j]);
+
+                // Add to Hashmap
+                if p < j {
+                    distances.insert((p, j), distance);
+                } else {
+                    distances.insert((j, p), distance);
+                }
+
+            }
+        }
+    }
+
+
+    // for (key, value) in &distances {
+    //     println!("{:?}: {:?}", key, value);
+    // }
+
+
 }
 
-fn calc_3d_dist(p1: &Point, p2: &Point) -> f32 {
+
+
+fn calc_3d_dist(p1: &Point, p2: &Point) -> usize {
 
     let dist = ((p2.x - p1.x).powf(2.0) + (p2.y - p1.y).powf(2.0) + (p2.z - p1.z).powf(2.0)).sqrt();
 
-    dist
+    dist as usize
 
 }

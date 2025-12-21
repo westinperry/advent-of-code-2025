@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs};
 
 pub fn day_11() {
-    let content = fs::read_to_string("./inputs/day_11_input_test.txt")
+    let content = fs::read_to_string("./inputs/day_11_input.txt")
         .expect("Error reading file");
 
     let graph = parse_graph(&content);

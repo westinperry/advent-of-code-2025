@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, hash::Hash};
+use std::{collections::HashMap, fs};
 
 pub fn day_11() {
     let content = fs::read_to_string("./inputs/day_11_input_test.txt")
@@ -6,6 +6,9 @@ pub fn day_11() {
 
     let graph = parse_graph(&content);
 
+    let result = count_paths("you", &graph);
+
+    println!("{}", result);
 }
 
 fn parse_graph(input: &str) -> HashMap<String, Vec<String>> {
@@ -29,3 +32,18 @@ fn parse_graph(input: &str) -> HashMap<String, Vec<String>> {
     graph
 }
 
+fn count_paths( current: &str, graph: &HashMap<String, Vec<String>>) -> usize {
+    if current == "out" {
+        return 1;
+    }
+
+    let mut total = 0;
+
+    if let Some(neighbors) = graph.get(current) {
+        for next in neighbors {
+            total += count_paths(next, graph);
+        }
+    }
+
+    total
+}

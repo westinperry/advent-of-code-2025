@@ -50,10 +50,10 @@ pub fn day_8() {
     //     println!("{:?}: {:?}", key, value);
     // }
 
+    // Making each point its own circuit
+    let mut circuits: Vec<Vec<usize>> = (0..points.len()).map(|i| vec![i]).collect();
 
-    let mut circuits: Vec<Vec<usize>> = Vec::new();
-
-    for _ in 0..1000 {
+    while circuits.len() > 1 {
         // Find the smallest value in the HashMap
         let min_entry = distances
             .iter()
@@ -84,6 +84,13 @@ pub fn day_8() {
             (Some(i), Some(j)) if i == j => {},
             // Both in different circuits
             (Some(i), Some(j)) => {
+
+                if circuits.len() == 2 {
+                    let x_1 = points[key1].x;
+                    let x_2 = points[key2].x;
+                    println!("Part 2: {}", x_1 as u32 * x_2 as u32);
+                }
+                
                 let circuit2 = circuits.remove(j.max(i));
                 let circuit1 = circuits.remove(j.min(i));
                 let mut merged = circuit1;
@@ -98,9 +105,8 @@ pub fn day_8() {
             (None, Some(j)) => {
                 circuits[j].push(key1);
             },
-            // Neither is in a circuit - create new one
+            // Neither is in a circuit - not possible
             (None, None) => {
-                circuits.push(vec![key1, key2]);
             }
         }
 

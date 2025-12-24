@@ -14,17 +14,21 @@ pub fn day_10() {
     let mut total_presses: u64 = 0;
 
     for row in &row_vectors {
+        let goal_str = row[0];
+        let num_lights = goal_str.len() - 2; // strip [ ]
         let voltage = row[row.len() - 1];
-        let volt_vec = extract_voltage(voltage);
+        
+        let goal_mask = goal(goal_str);
 
-        let mut button_vecs: Vec<Vec<usize>> = Vec::new();
+        let mut button_masks = Vec::new();
         for token in row.iter().skip(1) {
             if token.starts_with('(') {
-                button_vecs.push(button_indices(token));
+                let mask = buttons(token, num_lights as u32);
+                button_masks.push(mask);
             }
         }
 
-        if let Some(min_p) = min_presses_part2(&volt_vec, &button_vecs) {
+        if let Some(min_p) = min_presses(goal_mask, &button_masks) {
             total_presses += min_p as u64;
         } else {
             panic!("No solution found for row: {:?}", row);
@@ -32,13 +36,6 @@ pub fn day_10() {
     }
 
     println!("Total minimum presses: {}", total_presses);
-}
-
-fn extract_voltage(voltage_str: &str) -> Vec<u32> {
-    let voltage_str = &voltage_str[1..voltage_str.len()-1];
-    let voltage = voltage_str.split(",").map(|s| s.parse::<u32>().expect("Error parsing")).collect();
-
-    voltage
 }
 
 fn goal(s: &str) -> u32 {
@@ -70,18 +67,6 @@ fn buttons(b: &str, num_lights: u32) -> u32 {
     }
 
     mask
-}
-
-fn button_indices(b: &str) -> Vec<usize> {
-    let b = &b[1..b.len() - 1]; // strip ( )
-    
-    if b.trim().is_empty() {
-        return vec![];
-    }
-
-    b.split(',')
-        .map(|token| token.trim().parse().expect("Error parsing button index"))
-        .collect()
 }
 
 fn min_presses(goal_mask: u32, buttons: &[u32]) -> Option<u32> {
@@ -118,61 +103,5 @@ fn min_presses(goal_mask: u32, buttons: &[u32]) -> Option<u32> {
         }
     }
 
-    best
-}
-
-fn min_presses_part2(targets: &[u32], buttons: &[Vec<usize>]) -> Option<u32> {
-    let n = buttons.len();
-    let num_counters = targets.len();
-    
-    if n == 0 {
-        return if targets.iter().all(|&t| t == 0) { Some(0) } else { None };
-    }
-
-    let max_presses = *targets.iter().max().unwrap_or(&0);
-    
-    fn solve(
-        button_idx: usize,
-        counters: &mut Vec<u32>,
-        buttons: &[Vec<usize>],
-        targets: &[u32],
-        current_presses: u32,
-        best: &mut Option<u32>,
-        max_presses: u32,
-    ) {
-        if let Some(b) = *best {
-            if current_presses >= b {
-                return;
-            }
-        }
-
-        if button_idx == buttons.len() {
-            if counters.iter().zip(targets).all(|(c, t)| c == t) {
-                *best = Some(current_presses);
-            }
-            return;
-        }
-
-        for presses in 0..=max_presses {
-            for &idx in &buttons[button_idx] {
-                counters[idx] += presses;
-            }
-
-            let valid = counters.iter().zip(targets).all(|(c, t)| c <= t);
-            
-            if valid {
-                solve(button_idx + 1, counters, buttons, targets, current_presses + presses, best, max_presses);
-            }
-
-            for &idx in &buttons[button_idx] {
-                counters[idx] -= presses;
-            }
-        }
-    }
-
-    let mut counters = vec![0u32; num_counters];
-    let mut best = None;
-    solve(0, &mut counters, buttons, targets, 0, &mut best, max_presses);
-    
     best
 }
